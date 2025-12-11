@@ -1,0 +1,408 @@
+---
+title: "Qualitative Text Analysis with Local LLMs"
+author:
+  - name: Mark Andrews
+    affiliation: Nottingham Trent University
+format:
+  revealjs:
+    theme: slides.scss
+    slide-number: c/t
+    incremental: false
+    footer: "[mark-andrews.github.io/bps-mscp-2025](https://mark-andrews.github.io/bps-mscp-2025)"
+    chalkboard: true
+    preview-links: auto
+    transition: slide
+    background-transition: fade
+---
+
+## The Nature of Psychological Data
+
+Much of our raw data in psychology and social sciences is linguistic, not numeric:
+
+- Interview transcripts
+- Open-ended survey responses
+- Social media posts
+- Clinical notes and therapy sessions
+- Focus group discussions
+
+
+## Traditional Approach: Qualitative Analysis
+
+The dominant approach to analyzing textual data:
+
+- Researchers manually read and interpret texts
+- Identify recurring themes, patterns, concepts
+- Develop coding schemes through iterative refinement
+- Apply codes systematically across dataset
+- Build interpretive frameworks grounded in data
+
+Highly labor-intensive, limiting typical studies to small samples (e.g., 5-15 interview transcripts).
+
+## Pre-LLM Computational Approaches
+
+Natural language processing existed before LLMs (topic models, sentiment analysis, word embeddings).
+
+*Key limitation*: These methods excel at identifying coarse-grained patterns across large corpora but fail for typical psychological research needs:
+
+- Require large, representative text samples (thousands+ documents)
+- Cannot perform zero-shot analysis on new data
+- Poor at nuanced, context-dependent interpretation
+- Unsuitable for small-scale studies (10-100 texts)
+
+Until recently, computational text analysis for typical psychological data was practically impossible.
+
+## Overview of presentation
+
+Three key questions:
+
+- Can LLMs be used for qualitative text analysis?
+- How do we address ethical and practical barriers?
+- What computational resources are required?
+
+## The Promise of LLMs
+
+LLMs like ChatGPT, Claude, and Llama show potential for qualitative text analysis.
+
+Rapid growth in research since 2023:
+
+- LLMs can match or exceed crowd workers on text annotation tasks
+- Successfully applied to thematic analysis, survey coding, grounded theory
+- Most effective in human-AI collaboration workflows
+- Still questions about reliability and interpretive depth
+
+Focus here: standard off-the-shelf models, not fine-tuned or special-purpose tools.
+
+## Ethical Barriers
+
+Third-party LLM services (ChatGPT, Claude API) pose problems:
+
+- Data transmitted to third parties
+- Accessed by provider personnel
+- May be shared with others
+- Ethics review boards unlikely to approve
+
+Even with opt-out policies, confidentiality requirements not satisfied.
+
+## Financial Barriers
+
+API pricing examples (Anthropic Claude, December 2024):
+
+### Claude Opus 4.5:
+
+- $5 per 1M input tokens
+- $25 per 1M output tokens
+
+### Claude Sonnet 4.5:
+
+- $3 per 1M input tokens
+- $15 per 1M output tokens
+
+Large-scale analyses of thousands of texts could cost hundreds or thousands of dollars.
+
+## The Solution: Local LLMs
+
+Local LLM runs entirely on your computer:
+
+- No communication with external servers
+- No ethical issues beyond standard data analysis
+- No per-use costs (electricity only)
+- Suitable for confidential participant data
+
+## Installing Local LLMs with Ollama
+
+Ollama: open-source software for running local LLMs.
+
+Available for Windows, MacOS, Linux.
+
+Supports dozens of models: Llama, DeepSeek, Mistral, Gemma, etc.
+
+Installation straightforward on all platforms.
+
+## Getting Started with Ollama
+
+Start the local server:
+```bash
+ollama serve
+```
+
+Install a model:
+```bash
+ollama pull llama3.3
+```
+
+Server runs on `http://localhost:11434`
+
+## Using LLMs in R with `ellmer`
+
+Install and load:
+```r
+install.packages("ellmer")
+library(ellmer)
+```
+
+Basic interaction:
+```r
+client <- chat_ollama(model = "llama3.3")
+client$chat('What is 6 times 6?')
+```
+
+## System Prompts
+
+System prompts provide general instructions:
+
+```r
+pedantic <- "When answering, provide a turgid
+  and convoluted reply in the style of an
+  insufferable pedant."
+
+client <- chat_ollama(model = "llama3.3",
+                      system_prompt = pedantic)
+```
+
+Critical for controlling output style and format.
+
+## Example Task: Rating Free-Text Responses
+
+Study from Merrell et al. (2024), *Psychological Science*:
+
+- 409 free-text responses about concealing infectious illness
+- Human raters coded responses on four criteria
+- Can LLMs replicate human ratings?
+
+## Example Response
+
+> "I didn't really want people to be afraid of me. I had taken a test and I knew I wasn't positive for Covid, so I was just worried that people would think it was false and that they'd avoid me or get mad at me for attending when I was sick"
+
+Rate for: 
+
+- *Self vs other motivation*: Is concealment driven by self-interest or concern for others?
+- *Illness harm*: Does participant mention severity or harm of the illness?
+- *Stigma/rejection*: Fear of social judgment or being avoided?
+- *Missing work/class*: Concern about missing obligations?
+
+## Rating Criteria: Self vs Other
+
+Human rater instructions:
+
+- Self motivation: not wanting to miss work/class, not wanting to be judged or avoided
+- Other motivation: not wanting to worry people, not wanting to burden others
+- Code as "1" (self), "2" (other), "0" (neither/unclear), or "1,2" (both)
+
+## Basic LLM Rating Code
+
+```r
+instructions <- 'We have collected free response data...
+Does the participant mention motivations for concealment
+that were more related to the self or more related to
+others?
+...
+Coding scheme: please put a "1" if it is a self
+motivation, a "2" if it is an other motivation...'
+
+client <- chat_ollama(model = "llama3.3",
+                      system_prompt = instructions)
+client$chat(free_text)
+```
+
+## Improving the Output
+
+Initial output contains explanation plus rating.
+
+Problems:
+
+- Output is random (varies each run)
+- Unstructured text format
+- Need control over format
+
+Solution: request structured output with reasoning.
+
+## Requesting JSON Output
+
+Add to instructions:
+
+```
+Before answering, explain your reasoning step by step,
+using example phrases or words. Then provide the final
+answer.
+
+Format your response as a JSON object literal with keys
+"reasoning" and "answer".
+
+Example:
+  {"reasoning": "The text shows elements of self
+    motivation.", "answer": "1"}
+```
+
+## Parsing JSON Output
+
+```r
+results <- client$chat(free_text)
+jsonlite::fromJSON(results)
+```
+
+Returns structured data:
+
+- `reasoning`: step-by-step explanation
+- `answer`: numeric rating (0, 1, 2, or 1,2)
+
+## Multiple Runs for Reliability
+
+LLM output is stochastic.
+
+Run analysis multiple times per text (e.g., 10 iterations).
+
+Use most common response as final rating.
+
+Reduces impact of random variation.
+
+## Evaluation Results
+
+| Criterion | LLM-rater agreement | Inter-rater agreement |
+|-----------|---------------------|------------------------|
+| self-other | 89.0% | 92.9% |
+| harm | 61.4% | 78.5% |
+| stigma | 88.5% | 94.9% |
+| miss | 81.2% | 93.4% |
+| **Overall** | **80.0%** | **89.9%** |
+
+## Interpretation
+
+LLM achieved 80% average agreement with human raters.
+
+Human raters agreed 90% of the time.
+
+Not perfect, but respectable for:
+
+- Off-the-shelf model
+- No fine-tuning
+- No prompt engineering
+- Zero customisation
+
+## Performance Variability
+
+Significant variation across criteria.
+
+"Harm" criterion: only 61% agreement.
+
+"Self-other" and "stigma": approaching human-level (88-89%).
+
+Task difficulty and instruction clarity likely factors.
+
+## Computational Requirements
+
+Critical practical consideration: what hardware is needed?
+
+Test setup:
+
+- Task: run rating analysis on one text
+- CPU-only: AMD Ryzen 9 7900X (12-core, 94GB RAM)
+- CPU+GPU: Threadripper PRO 3995WX (64-core, 512GB RAM) + RTX A6000 GPU
+
+## Speed Test Results
+
+| Device | Average time |
+|--------|--------------|
+| Ryzen 9 (CPU only) | 95 seconds |
+| Threadripper (CPU only) | 45 seconds |
+| Threadripper + GPU | 8.7 seconds |
+
+GPU provides 5× speedup over Threadripper CPU alone.
+
+GPU provides 11× speedup over Ryzen 9.
+
+## Scaling to Full Analysis
+
+Full analysis: 4 criteria × 409 texts × 10 runs = 16,360 tasks
+
+Estimated completion time:
+
+- Ryzen 9: 18 days
+- Threadripper (CPU): 7.6 days
+- Threadripper + GPU: 39 hours
+
+High-end GPU appears necessary for practical work.
+
+## Token Memory Limitations
+
+Default Ollama models: 8,192 token memory.
+
+Sufficient for the example task.
+
+Insufficient for very long texts (5000+ words) or long prompts.
+
+## Extending Token Memory
+
+Create custom model with larger memory:
+
+```bash
+# Create Modelfile
+FROM llama3.3:latest
+PARAMETER num_ctx 65536
+
+# Build custom model
+ollama create llama3.3x -f Modelfile
+```
+
+Then use in R:
+```r
+chat_ollama(model = "llama3.3x")
+```
+
+## Key Advantages
+
+Local LLMs for qualitative analysis:
+
+- No ethical barriers for confidential data
+- No per-use costs
+- Full control over data and processing
+- Reproducible with fixed model versions
+
+## Limitations and Challenges
+
+Performance below human-level (80% vs 90%).
+
+Requires significant computational resources (GPU).
+
+Output variability requires multiple runs.
+
+Performance varies by task complexity.
+
+## Future Prospects
+
+LLMs evolving rapidly.
+
+December 2024 performance may improve with newer models.
+
+Potential for fine-tuning on specific tasks.
+
+Prompt engineering could improve results.
+
+Special-purpose models may eventually outperform general models.
+
+## Practical Recommendations
+
+For small-scale work: high-end desktop may suffice.
+
+For serious analysis: GPU investment likely necessary.
+
+Start with standard prompts, iterate as needed.
+
+Run multiple iterations for reliability.
+
+Validate against human coding on subset of data.
+
+## Conclusion
+
+Local LLMs offer viable solution for qualitative text analysis when third-party services are unsuitable.
+
+Current performance (80% agreement) is encouraging but not yet matching human performance (90%).
+
+Computational requirements are non-trivial but manageable with appropriate hardware.
+
+Rapid evolution of LLMs suggests performance will continue to improve.
+
+## Questions?
+
+Slides available at repository: <https://mark-andrews.github.io/bps-mscp-2025>
+
+Full blog posts provide additional detail and implementation code: <https://www.mjandrews.org/notes/text_analysis_with_llms/>
