@@ -1,5 +1,5 @@
 ---
-title: "Qualitative Text Analysis with Local LLMs"
+title: "Analying Unstructured Text with Large Language Models (LLMs)"
 author:
   - name: Mark Andrews
     affiliation: Nottingham Trent University
