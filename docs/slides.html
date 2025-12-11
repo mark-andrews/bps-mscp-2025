@@ -6,11 +6,11 @@
 <script src="slides_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="slides_files/libs/quarto-html/quarto-syntax-highlighting-3aa970819e70fbc78806154e5a1fcd28.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-99.9.9">
+<link href="slides_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
 
   <meta name="author" content="Mark Andrews">
-  <title>Analying Unstructured Text with Large Language Models (LLMs)</title>
+  <title>Analyzing Unstructured Text with Large Language Models (LLMs)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -95,7 +95,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-5c16f98d3e415a13fabd7d88805bbf19.css">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-ca7a56f2bd0c08f5c93630723dfe41a2.css">
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,7 +195,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Analying Unstructured Text with Large Language Models (LLMs)</h1>
+  <h1 class="title">Analyzing Unstructured Text with Large Language Models (LLMs)</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -311,29 +311,29 @@ Mark Andrews
 <section id="getting-started-with-ollama" class="slide level2">
 <h2>Getting Started with Ollama</h2>
 <p>Start the local server:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href=""></a><span class="ex">ollama</span> serve</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href=""></a><span class="ex">ollama</span> serve</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Install a model:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href=""></a><span class="ex">ollama</span> pull llama3.3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href=""></a><span class="ex">ollama</span> pull llama3.3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Server runs on <code>http://localhost:11434</code></p>
 </section>
 <section id="using-llms-in-r-with-ellmer" class="slide level2">
 <h2>Using LLMs in R with <code>ellmer</code></h2>
 <p>Install and load:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"ellmer"</span>)</span>
-<span id="cb3-2"><a href=""></a><span class="fu">library</span>(ellmer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"ellmer"</span>)</span>
+<span id="cb3-2"><a href=""></a><span class="fu">library</span>(ellmer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Basic interaction:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>client <span class="ot">&lt;-</span> <span class="fu">chat_ollama</span>(<span class="at">model =</span> <span class="st">"llama3.3"</span>)</span>
-<span id="cb4-2"><a href=""></a>client<span class="sc">$</span><span class="fu">chat</span>(<span class="st">'What is 6 times 6?'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>client <span class="ot">&lt;-</span> <span class="fu">chat_ollama</span>(<span class="at">model =</span> <span class="st">"llama3.3"</span>)</span>
+<span id="cb4-2"><a href=""></a>client<span class="sc">$</span><span class="fu">chat</span>(<span class="st">'What is 6 times 6?'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="system-prompts" class="slide level2">
 <h2>System Prompts</h2>
 <p>System prompts provide general instructions:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>pedantic <span class="ot">&lt;-</span> <span class="st">"When answering, provide a turgid</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>pedantic <span class="ot">&lt;-</span> <span class="st">"When answering, provide a turgid</span></span>
 <span id="cb5-2"><a href=""></a><span class="st">  and convoluted reply in the style of an</span></span>
 <span id="cb5-3"><a href=""></a><span class="st">  insufferable pedant."</span></span>
 <span id="cb5-4"><a href=""></a></span>
 <span id="cb5-5"><a href=""></a>client <span class="ot">&lt;-</span> <span class="fu">chat_ollama</span>(<span class="at">model =</span> <span class="st">"llama3.3"</span>,</span>
-<span id="cb5-6"><a href=""></a>                      <span class="at">system_prompt =</span> pedantic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-6"><a href=""></a>                      <span class="at">system_prompt =</span> pedantic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Critical for controlling output style and format.</p>
 </section>
 <section id="example-task-rating-free-text-responses" class="slide level2">
@@ -369,7 +369,7 @@ Mark Andrews
 </section>
 <section id="basic-llm-rating-code" class="slide level2">
 <h2>Basic LLM Rating Code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>instructions <span class="ot">&lt;-</span> <span class="st">'We have collected free response data...</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>instructions <span class="ot">&lt;-</span> <span class="st">'We have collected free response data...</span></span>
 <span id="cb6-2"><a href=""></a><span class="st">Does the participant mention motivations for concealment</span></span>
 <span id="cb6-3"><a href=""></a><span class="st">that were more related to the self or more related to</span></span>
 <span id="cb6-4"><a href=""></a><span class="st">others?</span></span>
@@ -379,7 +379,7 @@ Mark Andrews
 <span id="cb6-8"><a href=""></a></span>
 <span id="cb6-9"><a href=""></a>client <span class="ot">&lt;-</span> <span class="fu">chat_ollama</span>(<span class="at">model =</span> <span class="st">"llama3.3"</span>,</span>
 <span id="cb6-10"><a href=""></a>                      <span class="at">system_prompt =</span> instructions)</span>
-<span id="cb6-11"><a href=""></a>client<span class="sc">$</span><span class="fu">chat</span>(free_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-11"><a href=""></a>client<span class="sc">$</span><span class="fu">chat</span>(free_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="improving-the-output" class="slide level2">
 <h2>Improving the Output</h2>
@@ -408,8 +408,8 @@ Example:
 </section>
 <section id="parsing-json-output" class="slide level2">
 <h2>Parsing JSON Output</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>results <span class="ot">&lt;-</span> client<span class="sc">$</span><span class="fu">chat</span>(free_text)</span>
-<span id="cb8-2"><a href=""></a>jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>results <span class="ot">&lt;-</span> client<span class="sc">$</span><span class="fu">chat</span>(free_text)</span>
+<span id="cb8-2"><a href=""></a>jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Returns structured data:</p>
 <ul>
 <li><code>reasoning</code>: step-by-step explanation</li>
@@ -538,14 +538,14 @@ Example:
 <section id="extending-token-memory" class="slide level2">
 <h2>Extending Token Memory</h2>
 <p>Create custom model with larger memory:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href=""></a><span class="co"># Create Modelfile</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href=""></a><span class="co"># Create Modelfile</span></span>
 <span id="cb9-2"><a href=""></a><span class="ex">FROM</span> llama3.3:latest</span>
 <span id="cb9-3"><a href=""></a><span class="ex">PARAMETER</span> num_ctx 65536</span>
 <span id="cb9-4"><a href=""></a></span>
 <span id="cb9-5"><a href=""></a><span class="co"># Build custom model</span></span>
-<span id="cb9-6"><a href=""></a><span class="ex">ollama</span> create llama3.3x <span class="at">-f</span> Modelfile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-6"><a href=""></a><span class="ex">ollama</span> create llama3.3x <span class="at">-f</span> Modelfile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then use in R:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">chat_ollama</span>(<span class="at">model =</span> <span class="st">"llama3.3x"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">chat_ollama</span>(<span class="at">model =</span> <span class="st">"llama3.3x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="key-advantages" class="slide level2">
 <h2>Key Advantages</h2>
@@ -589,7 +589,8 @@ Example:
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
-<p>Slides available at repository: <a href="https://mark-andrews.github.io/bps-mscp-2025" class="uri">https://mark-andrews.github.io/bps-mscp-2025</a></p>
+<p>Slides available at repository: <a href="https://mark-andrews.github.io/bps-mscp-2025" class="uri">https://mark-andrews.github.io/bps-mscp-2025</a>.</p>
+<p>Slides and workshop source code: <a href="https://github.com/mark-andrews/bps-mscp-2025" class="uri">https://github.com/mark-andrews/bps-mscp-2025</a>.</p>
 <p>Full blog posts provide additional detail and implementation code: <a href="https://www.mjandrews.org/notes/text_analysis_with_llms/" class="uri">https://www.mjandrews.org/notes/text_analysis_with_llms/</a></p>
 
 </section>
@@ -784,7 +785,7 @@ Example:
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -858,14 +859,13 @@ Example:
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-          const outerScaffold = trigger.parentElement.cloneNode(true);
-          const codeEl = outerScaffold.querySelector('code');
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
             }
-          }
-          return codeEl.innerText;
+            return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

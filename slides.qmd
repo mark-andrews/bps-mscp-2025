@@ -1,5 +1,5 @@
 ---
-title: "Analying Unstructured Text with Large Language Models (LLMs)"
+title: "Analyzing Unstructured Text with Large Language Models (LLMs)"
 author:
   - name: Mark Andrews
     affiliation: Nottingham Trent University
@@ -403,6 +403,8 @@ Rapid evolution of LLMs suggests performance will continue to improve.
 
 ## Questions?
 
-Slides available at repository: <https://mark-andrews.github.io/bps-mscp-2025>
+Slides available at repository: <https://mark-andrews.github.io/bps-mscp-2025>.
+
+Slides and workshop source code: <https://github.com/mark-andrews/bps-mscp-2025>.
 
 Full blog posts provide additional detail and implementation code: <https://www.mjandrews.org/notes/text_analysis_with_llms/>
